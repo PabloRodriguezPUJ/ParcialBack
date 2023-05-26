@@ -3,6 +3,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
+
 
 import java.util.List;
 import java.util.Optional;
@@ -10,41 +29,30 @@ import parcial.demo.model.*;
 import parcial.demo.services.*;
 import parcial.demo.repository.*;
 
+
+
+
 @RestController
 @RequestMapping("/libros")
 public class LibroController {
-    private final LibroService libroService;
 
+
+    Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
-    public LibroController(LibroService libroService) {
-        this.libroService = libroService;
-    }
+    private final LibroService LibroRepository;
 
-    @GetMapping
-    public ResponseEntity<List<Libro>> obtenerTodosLosLibros() {
-        List<Libro> libros = libroService.obtenerTodosLosLibros();
-        return new ResponseEntity<>(libros, HttpStatus.OK);
-    }
-
+   
     @GetMapping("/{id}")
-    public ResponseEntity<Libro> obtenerLibroPorId(@PathVariable Long id) {
-        Optional<Libro> libro = libroService.obtenerLibroPorId(id);
-        return libro.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @CrossOrigin(origins = "http://localhost:4200")
+    public Libro findEstablecimiento(@PathVariable Long id){
+        return LibroService.obtenerLibroPorId();
+        
     }
-
-    @PostMapping
-    public ResponseEntity<Libro> guardarLibro(@RequestBody Libro libro) {
-        Libro nuevoLibro = libroService.guardarLibro(libro);
-        return new ResponseEntity<>(nuevoLibro, HttpStatus.CREATED);
+    @GetMapping("/List")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public List<Libro> listEstablecimiento(){
+        return LibroRepository.findAll();
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarLibroPorId(@PathVariable Long id) {
-        libroService.eliminarLibroPorId(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
     // Opcional: Otros métodos y endpoints adicionales
 }
 

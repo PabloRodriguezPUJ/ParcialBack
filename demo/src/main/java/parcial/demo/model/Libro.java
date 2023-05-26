@@ -1,9 +1,18 @@
 package parcial.demo.model;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 
 @Entity
 public class Libro {
@@ -11,11 +20,28 @@ public class Libro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String título;
+    private String titulo;
     private String referencia;
     private String autor;
     private Double precio;
-    private String ubicación;
+    private String ubicacion;
+
+
+    public Libro(){
+
+    }
+    public Libro(Long id, String titulo, String referencia,String autor, Double precio,  String ubicacion) {
+       
+        this.id=id;
+        this.titulo=titulo;
+       this.precio=precio;
+       this.autor=autor;
+       this.referencia=referencia;
+       this.ubicacion=ubicacion;
+
+        
+    }
+
     public Long getId() {
         return id;
     }
@@ -23,10 +49,10 @@ public class Libro {
         this.id = id;
     }
     public String getTítulo() {
-        return título;
+        return titulo;
     }
     public void setTítulo(String título) {
-        this.título = título;
+        this.titulo = título;
     }
     public String getReferencia() {
         return referencia;
@@ -47,10 +73,10 @@ public class Libro {
         this.precio = precio;
     }
     public String getUbicación() {
-        return ubicación;
+        return ubicacion;
     }
     public void setUbicación(String ubicación) {
-        this.ubicación = ubicación;
+        this.ubicacion = ubicación;
     }
 
    
